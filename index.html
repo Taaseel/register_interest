@@ -83,6 +83,15 @@
             font-family: inherit;
         }
 
+        /* تنسيق القوائم المنسدلة لتبدأ بلون خفيف */
+        select { color: #bbb; }
+        select option { color: #000; } /* الخيارات داخل القائمة دائماً سوداء */
+
+        ::placeholder {
+            color: #bbb;
+            opacity: 1;
+        }
+
         .output-field {
             background-color: #f8f1e9 !important;
             color: var(--gold);
@@ -95,6 +104,7 @@
             outline: none; 
             background: #fff; 
             box-shadow: 0 0 0 4px rgba(194, 153, 111, 0.1); 
+            color: #000;
         }
 
         .submit-btn { 
@@ -185,7 +195,7 @@
                 <h3>🏡 بيانات العقار المستهدف</h3>
                 <div class="field">
                     <label>نوع العقار <span class="required-star">*</span></label>
-                    <select name="property_type" required>
+                    <select name="property_type" required onchange="this.style.color='#000'">
                         <option value="" disabled selected>اختر النوع...</option>
                         <option value="شقة">شقة</option>
                         <option value="مكتب">مكتب</option>
@@ -203,7 +213,7 @@
                 </div>
                 <div class="field">
                     <label>الميزانية المقترحة للشراء (SAR) <span class="required-star">*</span></label>
-                    <input type="text" id="budget_display" required placeholder="0" oninput="formatBudget(this)">
+                    <input type="text" id="budget_display" required placeholder="ادخل القيمة" oninput="formatBudget(this)">
                     <input type="hidden" name="budget" id="budget">
                 </div>
             </div>
@@ -212,7 +222,7 @@
                 <h3>📅 خطة الحجز والاهتمام</h3>
                 <div class="field">
                     <label>ما مدى اهتمامك بالشراء عن طريق منتج تأصيل؟ <span class="required-star">*</span></label>
-                    <select name="interest_level" required>
+                    <select name="interest_level" required onchange="this.style.color='#000'">
                         <option value="" disabled selected>اختر درجة الاهتمام...</option>
                         <option value="قوي">قوي 🔥</option>
                         <option value="متوسط">متوسط</option>
@@ -221,7 +231,7 @@
                 </div>
                 <div class="field">
                     <label>خطة الحجز المستهدفة <span class="required-star">*</span></label>
-                    <select name="booking_plan" required>
+                    <select name="booking_plan" required onchange="this.style.color='#000'">
                         <option value="" disabled selected>اختر الوقت المناسب...</option>
                         <option value="خلال الشهر الحالي">خلال الشهر الحالي</option>
                         <option value="خلال الـ 3 شهور القادمة">خلال الـ 3 شهور القادمة</option>
@@ -253,6 +263,7 @@
                 el.value = daily.toLocaleString('en-US');
                 document.getElementById('pos_monthly_display').value = monthly.toLocaleString('en-US');
                 document.getElementById('pos_monthly_sales').value = monthly;
+                el.style.color = '#000';
             } else {
                 el.value = "";
                 document.getElementById('pos_monthly_display').value = "";
@@ -265,13 +276,13 @@
             if (!isNaN(val) && val !== "") {
                 document.getElementById('budget').value = val;
                 el.value = Number(val).toLocaleString('en-US');
+                el.style.color = '#000';
             } else {
                 el.value = "";
                 document.getElementById('budget').value = "";
             }
         }
 
-        // تم تحديث الرابط هنا ليتطابق مع الرابط الجديد الذي أرسلته
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzXQ0YnpsvvpkHRN8vLl0KDXf5sOXT8sq1zwmxtiBFaxgK1JNsp7lPBlK8mhr9W6Ce4/exec";
 
         async function sendData() {
