@@ -38,7 +38,7 @@
             box-shadow: 0 4px 20px rgba(0,0,0,0.05);
         }
 
-        .logo-svg { width: 140px; margin-bottom: 10px; }
+        .logo-svg { width: 150px; margin-bottom: 10px; }
 
         .survey-container { 
             max-width: 550px; 
@@ -59,11 +59,18 @@
 
         .field { margin-bottom: 22px; text-align: right; }
         
+        .flex-fields {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 22px;
+        }
+        .flex-fields .field { flex: 1; margin-bottom: 0; }
+
         label { 
             display: block; 
             font-weight: 700; 
             margin-bottom: 10px; 
-            font-size: 0.9rem; 
+            font-size: 0.85rem; 
             color: #2c3e50; 
         }
         
@@ -76,6 +83,13 @@
             font-family: inherit;
         }
 
+        .output-field {
+            background-color: #f8f1e9 !important;
+            color: var(--gold);
+            font-weight: bold;
+            border-color: var(--gold);
+        }
+
         input:focus, select:focus, textarea:focus { 
             border-color: var(--gold); 
             outline: none; 
@@ -83,14 +97,11 @@
             box-shadow: 0 0 0 4px rgba(194, 153, 111, 0.1); 
         }
 
-        textarea { height: 120px; resize: none; }
-
         .submit-btn { 
             width: 100%; background: var(--gold); color: var(--white); 
             padding: 20px; border: none; border-radius: 20px; 
             font-size: 1.2rem; font-weight: bold; cursor: pointer;
             box-shadow: 0 10px 25px rgba(194, 153, 111, 0.3); transition: 0.3s;
-            margin-top: 10px;
         }
         
         .submit-btn:hover { opacity: 0.95; transform: translateY(-3px); }
@@ -116,15 +127,15 @@
     </div>
 
     <section class="hero">
-        <svg class="logo-svg" viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg">
-            <path d="M80 30 H120 C145 30 145 60 120 60 H80 V30 Z" fill="#c2996f"/>
-            <path d="M80 70 H120 C145 70 145 105 120 105 H80 V70 Z" fill="#c2996f"/>
-            <rect x="160" y="30" width="40" height="75" rx="20" fill="#c2996f"/>
-            <rect x="220" y="55" width="40" height="50" rx="20" fill="#c2996f"/>
-            <rect x="280" y="30" width="40" height="75" rx="20" fill="#c2996f"/>
-            <text x="200" y="160" text-anchor="middle" font-family="Arial" font-weight="900" font-size="48" fill="#000000">BUILD WISE</text>
+        <svg class="logo-svg" viewBox="0 0 400 160" xmlns="http://www.w3.org/2000/svg">
+            <path d="M105 20 H138 A 16 16 0 0 1 138 52 H105 V20 Z" fill="#c2996f"/>
+            <path d="M105 58 H138 A 16 16 0 0 1 138 90 H105 V58 Z" fill="#c2996f"/>
+            <rect x="175" y="20" width="32" height="70" rx="16" fill="#c2996f"/>
+            <rect x="222" y="45" width="32" height="45" rx="16" fill="#c2996f"/>
+            <rect x="268" y="20" width="32" height="70" rx="16" fill="#c2996f"/>
+            <text x="200" y="145" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="52" fill="#000000" style="letter-spacing: -2px;">BUILD WISE</text>
         </svg>
-        <p style="font-weight: 600; color: #666;">تحويل التدفقات النقدية إلى أصول عقارية</p>
+        <p style="font-weight: 600; color: #666; margin-top: 15px;">تحويل التدفقات النقدية إلى أصول عقارية</p>
     </section>
 
     <div class="survey-container">
@@ -151,12 +162,20 @@
 
             <div class="card">
                 <h3>💰 البيانات المالية</h3>
-                <div class="field">
-                    <label>متوسط المبيعات الشهرية عبر أجهزة (POS) <span class="required-star">*</span></label>
-                    <input type="text" id="pos_display" required placeholder="0" oninput="formatNumberInput(this, 'pos_monthly_sales')">
-                    <input type="hidden" name="pos_monthly_sales" id="pos_monthly_sales">
+                <label>متوسط المبيعات عبر أجهزة نقاط البيع (POS) <span class="required-star">*</span></label>
+                <div class="flex-fields">
+                    <div class="field">
+                        <label style="font-size: 0.75rem; color: #888;">يومي</label>
+                        <input type="text" id="pos_daily_display" required placeholder="ادخل القيمة" oninput="calculateMonthly(this)">
+                    </div>
+                    <div class="field">
+                        <label style="font-size: 0.75rem; color: #888;">شهري</label>
+                        <input type="text" id="pos_monthly_display" class="output-field" readonly placeholder="0">
+                    </div>
                 </div>
-                <div class="field">
+                <input type="hidden" name="pos_monthly_sales" id="pos_monthly_sales">
+
+                <div class="field" style="margin-top: 22px;">
                     <label>نسبة صافي الربح لسنة 2025 (%) <span class="required-star">*</span></label>
                     <input type="number" step="0.01" max="100" name="net_profit_percent_2025" required placeholder="مثال: 15" oninput="if(this.value>100)this.value=100;">
                 </div>
@@ -184,7 +203,7 @@
                 </div>
                 <div class="field">
                     <label>الميزانية المقترحة للشراء (SAR) <span class="required-star">*</span></label>
-                    <input type="text" id="budget_display" required placeholder="0" oninput="formatNumberInput(this, 'budget')">
+                    <input type="text" id="budget_display" required placeholder="0" oninput="formatBudget(this)">
                     <input type="hidden" name="budget" id="budget">
                 </div>
             </div>
@@ -226,18 +245,34 @@
     </div>
 
     <script>
-        function formatNumberInput(displayElement, hiddenId) {
-            let value = displayElement.value.replace(/,/g, '');
-            if (!isNaN(value) && value !== "") {
-                document.getElementById(hiddenId).value = value;
-                displayElement.value = Number(value).toLocaleString('en-US');
+        function calculateMonthly(el) {
+            let val = el.value.replace(/,/g, '');
+            if (!isNaN(val) && val !== "") {
+                let daily = parseFloat(val);
+                let monthly = daily * 30;
+                el.value = daily.toLocaleString('en-US');
+                document.getElementById('pos_monthly_display').value = monthly.toLocaleString('en-US');
+                document.getElementById('pos_monthly_sales').value = monthly;
             } else {
-                displayElement.value = "";
-                document.getElementById(hiddenId).value = "";
+                el.value = "";
+                document.getElementById('pos_monthly_display').value = "";
+                document.getElementById('pos_monthly_sales').value = "";
             }
         }
 
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwjOKeKCjA4sV2At0rPmnglVzFsBote_xT8L3oXwxqeMa_ezhdYMs3x8Jy0PFG8ix7_/exec";
+        function formatBudget(el) {
+            let val = el.value.replace(/,/g, '');
+            if (!isNaN(val) && val !== "") {
+                document.getElementById('budget').value = val;
+                el.value = Number(val).toLocaleString('en-US');
+            } else {
+                el.value = "";
+                document.getElementById('budget').value = "";
+            }
+        }
+
+        // تم تحديث الرابط هنا ليتطابق مع الرابط الجديد الذي أرسلته
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzXQ0YnpsvvpkHRN8vLl0KDXf5sOXT8sq1zwmxtiBFaxgK1JNsp7lPBlK8mhr9W6Ce4/exec";
 
         async function sendData() {
             const btn = document.getElementById('btnSubmit');
